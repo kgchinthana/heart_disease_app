@@ -7,11 +7,11 @@ function App() {
 
   const handleSubmit = async (formData) => {
     try {
-      const { name, email, ...predictionData } = formData; // Exclude name and email from the request
+      // Include name and email along with the other prediction data
       const response = await fetch('http://127.0.0.1:8000/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(predictionData),
+        body: JSON.stringify(formData), // Send the entire form data, including name and email
       });
 
       if (response.ok) {
@@ -39,13 +39,28 @@ function App() {
             <div className="alert alert-danger">{result.error}</div>
           ) : (
             <div>
-              <h1 className={`display-4 ${result.prediction === 'High Risk' ? 'text-danger' : 'text-success'}`}>
+              <h1 className={`display-4 mb-4 ${result.prediction === 'High Risk' ? 'text-danger' : 'text-success'}`}>
                 {result.prediction === 'High Risk' ? '⚠️ High Risk' : '✅ Low Risk'}
               </h1>
-              <p className="lead">
-                Thank you, <strong>{result.name}</strong>!
-              </p>
-              <p>We’ve sent a detailed report to your email: <strong>{result.email}</strong></p>
+              <div
+                className="card shadow-sm p-4"
+                style={{ backgroundColor: '#f9f9f9', borderRadius: '10px' }}
+              >
+                <p className="lead">
+                  Thank you, <strong>{result.name}</strong>!
+                </p>
+                <p>
+                  Based on the details you provided, our analysis suggests that you are at{' '}
+                  <strong>{result.prediction}</strong>.
+                </p>
+                <p className="text-muted">
+                  A detailed report has been sent to your email: <strong>{result.email}</strong>.
+                </p>
+                <div className="alert alert-info mt-4">
+                  <strong>Note:</strong> Remember, this is a predictive model and not a definitive diagnosis.
+                  Please consult a healthcare professional for medical advice.
+                </div>
+              </div>
             </div>
           )}
           <button
