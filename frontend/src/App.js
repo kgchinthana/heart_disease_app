@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   const [result, setResult] = useState(null);
 
-
   const handleSubmit = async (formData) => {
     try {
       // Include name and email along with the other prediction data
